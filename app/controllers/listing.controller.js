@@ -15,6 +15,8 @@ exports.createListing = async (req, res) => {
       semester: req.body.semester,
       rent:  req.body.rent,
       userid: req.body.userid,
+      views:0,
+      image:req.body.image,
     });
     res.send({ message: "Listing created successfully!" });
   } catch (error) {
@@ -80,7 +82,7 @@ exports.findOne = (req, res) => {
     });
 };
 
-// Update a Tutorial by the id in the request
+// Update a listings by the id in the request
 exports.update = (req, res) => {
   const id = req.params.id;
 

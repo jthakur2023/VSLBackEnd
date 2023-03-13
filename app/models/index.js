@@ -28,5 +28,7 @@ db.user = require("../models/user.model.js")(sequelize, Sequelize);
 
 db.listing = require("../models/listing.model.js")(sequelize, Sequelize);
 
+db.comment = require("../models/comment.model.js")(sequelize, Sequelize);
+
 
 module.exports = db;

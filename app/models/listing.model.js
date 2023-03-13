@@ -12,6 +12,12 @@ module.exports = (sequelize, Sequelize) => {
     rent: {
       type: Sequelize.STRING
     },
+    views: {
+      type: Sequelize.INTEGER
+    },
+    image: {
+      type: Sequelize.STRING
+    },
     userid: {
       type: Sequelize.INTEGER,
       allowNull: false,

@@ -12,7 +12,7 @@ app.use(express.json());
 
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
-
+app.use("/images", express.static("src/app/images"))
 app.use(
   cookieSession({
     name: "thakurji-session",
@@ -20,7 +20,9 @@ app.use(
     httpOnly: true,
     sameSite: 'strict'
   })
+ 
 );
+
 
 // database
 const db = require("./app/models");
@@ -41,6 +43,7 @@ app.get("/", (req, res) => {
 // routes
 require("./app/routes/auth.routes")(app);
 require("./app/routes/listing.routes")(app);
+require("./app/routes/comment.routes")(app);
 require("./app/routes/user.routes")(app);
 
 // set port, listen for requests
