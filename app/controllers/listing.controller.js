@@ -1,6 +1,8 @@
 const db = require("../models");
 const config = require("../config/auth.config");
 const Listing = db.listing;
+const User = db.user;
+const Favorite = db.favorite;
 const Op = db.Sequelize.Op;
 
 const jwt = require("jsonwebtoken");
@@ -24,6 +26,22 @@ exports.createListing = async (req, res) => {
     res.status(500).send({ message: error.message });
   }
 };
+
+exports.createFavorite = async (req, res) => {
+  // Save User to Database
+  try {
+    console.log("recived");
+    const listing = await Favorite.create({
+      userId: req.body.userid,
+      listingId:req.body.listingid,
+    });
+    res.send({ message: "Favorite created successfully!" });
+  } catch (error) {
+    console.log("failed"+ error.message);
+    res.status(500).send({ message: error.message });
+  }
+};
+
 
 
 // Retrieve all Tutorials from the database.
@@ -148,4 +166,49 @@ exports.deleteAll = (req, res) => {
       });
     });
 };
+
+
+// Retrieve all Tutorials from the database.
+exports.findFavorites = (req, res) => {
+  const id = req.params.userid;
+  
+  User.findOne({ where: { id: id}, include: Listing })
+    .then(data => {
+      console.log(data.dataValues.listings);
+      res.send(data.dataValues.listings);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving Listings."
+      });
+    });
+};
+
+
+exports.deleteFavorite = (req, res) => {
+  const userId = req.params.id;
+  const listingId = req.params.listingid;
+
+  Favorite.destroy({
+    where: { userId: userId, listingId: listingId }
+  })
+    .then(num => {
+      if (num == 1) {
+        res.send({
+          message: "Listings was deleted successfully!"
+        });
+      } else {
+        res.send({
+          message: `Cannot delete Listings with id=${id}. Maybe Listings was not found!`
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Could not delete Listings with id=" + id
+      });
+    });
+};
+
 

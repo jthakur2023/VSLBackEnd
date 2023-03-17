@@ -31,12 +31,16 @@ module.exports = function(app) {
     } else throw "error";
   });
 
-  app.post("/api/listings",  controller.createListing);
+  app.post("/api/listings",  [authJwt.verifyToken], controller.createListing);
   app.put("/api/listings/:id", [authJwt.verifyToken], controller.update);
   app.delete("/api/listings/:id", [authJwt.verifyToken], controller.delete);
   
   app.get("/api/listings/:id", [authJwt.verifyToken], controller.findOne);
   app.get("/api/listingsByUser/:id", [authJwt.verifyToken], controller.findAllByUser);
   app.get("/api/listings", [authJwt.verifyToken], controller.findAll);
+
   
+  app.post("/api/favorites", [authJwt.verifyToken], controller.createFavorite);
+  app.get("/api/favorites/:userid", [authJwt.verifyToken], controller.findFavorites);
+  app.post("/api/favorites/delete", [authJwt.verifyToken], controller.deleteFavorite);
 }
