@@ -174,7 +174,7 @@ exports.findFavorites = (req, res) => {
   
   User.findOne({ where: { id: id}, include: Listing })
     .then(data => {
-      console.log(data.dataValues.listings);
+      //console.log(data.dataValues.listings);
       res.send(data.dataValues.listings);
     })
     .catch(err => {
@@ -187,9 +187,11 @@ exports.findFavorites = (req, res) => {
 
 
 exports.deleteFavorite = (req, res) => {
-  const userId = req.params.id;
-  const listingId = req.params.listingid;
-
+  const userId = req.body.userid;
+  const listingId = req.body.listingid;
+ 
+  //console.log(userId);
+  //console.log(listingId); 
   Favorite.destroy({
     where: { userId: userId, listingId: listingId }
   })
@@ -200,13 +202,14 @@ exports.deleteFavorite = (req, res) => {
         });
       } else {
         res.send({
-          message: `Cannot delete Listings with id=${id}. Maybe Listings was not found!`
+          message: `Cannot delete favorite. Maybe Listings was not found!`
         });
       }
     })
     .catch(err => {
+      console.log(err);
       res.status(500).send({
-        message: "Could not delete Listings with id=" + id
+        message: "Could not delete favorite"
       });
     });
 };
