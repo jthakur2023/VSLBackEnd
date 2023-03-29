@@ -3,6 +3,7 @@ const config = require("../config/auth.config");
 const Listing = db.listing;
 const User = db.user;
 const Favorite = db.favorite;
+const Item = db.item;
 const Op = db.Sequelize.Op;
 
 const jwt = require("jsonwebtoken");
@@ -10,12 +11,20 @@ const jwt = require("jsonwebtoken");
 exports.createListing = async (req, res) => {
   // Save User to Database
   try {
-    console.log("recived");
+    if (req.body.image == undefined || req.body.image == ''){
+      req.body.image = "no_image.png";
+    }
     const listing = await Listing.create({
-      address: req.body.address,
       university: req.body.university,
       semester: req.body.semester,
+      address: req.body.address,
+      city: req.body.city,
+      state: req.body.state,
+      zip: req.body.zip,
+      rooms: req.body.rooms,
+      baths: req.body.baths,
       rent:  req.body.rent,
+      gender: req.body.gender,
       userid: req.body.userid,
       views:0,
       image:req.body.image,
@@ -26,22 +35,6 @@ exports.createListing = async (req, res) => {
     res.status(500).send({ message: error.message });
   }
 };
-
-exports.createFavorite = async (req, res) => {
-  // Save User to Database
-  try {
-    console.log("recived");
-    const listing = await Favorite.create({
-      userId: req.body.userid,
-      listingId:req.body.listingid,
-    });
-    res.send({ message: "Favorite created successfully!" });
-  } catch (error) {
-    console.log("failed"+ error.message);
-    res.status(500).send({ message: error.message });
-  }
-};
-
 
 
 // Retrieve all Tutorials from the database.
@@ -167,8 +160,24 @@ exports.deleteAll = (req, res) => {
     });
 };
 
+//  Favorites   //
 
-// Retrieve all Tutorials from the database.
+exports.createFavorite = async (req, res) => {
+  // Save User to Database
+  try {
+    console.log("recived");
+    const listing = await Favorite.create({
+      userId: req.body.userid,
+      listingId:req.body.listingid,
+    });
+    res.send({ message: "Favorite created successfully!" });
+  } catch (error) {
+    console.log("failed"+ error.message);
+    res.status(500).send({ message: error.message });
+  }
+};
+
+
 exports.findFavorites = (req, res) => {
   const id = req.params.userid;
   
@@ -214,4 +223,41 @@ exports.deleteFavorite = (req, res) => {
     });
 };
 
+// ITEMS
 
+exports.createItem = async (req, res) => {
+  // Save User to Database
+  try {
+    if (req.body.image == undefined || req.body.image == ''){
+      req.body.image = "no_image.png";
+    }
+    const listing = await Item.create({
+      title: req.body.title,
+      description: req.body.description,
+      price: req.body.price,
+      condition: req.body.condition,
+      image: req.body.image,
+      listingId:req.body.listingid,
+    });
+    res.send({ message: "Item created successfully!" });
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+};
+
+
+exports.getListingItems = (req, res) => {
+  const id = req.params.listingid;
+  
+  Listing.findOne({ where: { id: id}, include: ["items"] })
+    .then(data => {
+      console.log(data);
+      res.send(data.dataValues.items);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving Items."
+      });
+    });
+};

@@ -43,4 +43,8 @@ module.exports = function(app) {
   app.post("/api/favorites", [authJwt.verifyToken], controller.createFavorite);
   app.get("/api/favorites/:userid", [authJwt.verifyToken], controller.findFavorites);
   app.post("/api/favorites/delete", [authJwt.verifyToken], controller.deleteFavorite);
+
+  app.post("/api/listing/items",[authJwt.verifyToken], controller.createItem);
+  app.get("/api/listing/items/:listingid",[authJwt.verifyToken], controller.getListingItems);
+
 }

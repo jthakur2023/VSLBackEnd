@@ -1,2 +1,5 @@
 node_modules
 package-lock.json
+db.config.js
+/src/app/images/*.*
+/.src/app/images/*.*

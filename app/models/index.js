@@ -30,6 +30,7 @@ db.listing = require("../models/listing.model.js")(sequelize, Sequelize);
 
 db.comment = require("../models/comment.model.js")(sequelize, Sequelize);
 db.favorite = require("../models/favorites.model.js")(sequelize, Sequelize);
+db.item = require("./item.model.js")(sequelize, Sequelize);
 
 db.listing.belongsToMany(db.user, {
   through: "favorites",
@@ -42,5 +43,10 @@ db.user.belongsToMany(db.listing, {
   otherKey: "listingId"
 });
 
+db.listing.hasMany(db.item, {as: "items"});
+db.item.belongsTo(db.listing, {
+  foreignKey: "listingId",
+  as: "listing"
+});
 
 module.exports = db;
