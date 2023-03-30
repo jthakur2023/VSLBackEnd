@@ -28,6 +28,8 @@ exports.createListing = async (req, res) => {
       userid: req.body.userid,
       views:0,
       image:req.body.image,
+      image2:req.body.image2,
+      image3:req.body.image3,
     });
     res.send({ message: "Listing created successfully!" });
   } catch (error) {
