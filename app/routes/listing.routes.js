@@ -44,7 +44,15 @@ module.exports = function(app) {
   app.get("/api/favorites/:userid", [authJwt.verifyToken], controller.findFavorites);
   app.post("/api/favorites/delete", [authJwt.verifyToken], controller.deleteFavorite);
 
+  // Listing Items
   app.post("/api/listing/items",[authJwt.verifyToken], controller.createItem);
   app.get("/api/listing/items/:listingid",[authJwt.verifyToken], controller.getListingItems);
+  
+  // MarketPlace
+  app.post("/api/marketplace",[authJwt.verifyToken], controller.createMarketplace);
+  app.get("/api/marketplace/:userid",[authJwt.verifyToken], controller.getMarketplaceByUser);
+  app.get("/api/marketplace",[authJwt.verifyToken], controller.findAllMarketplaces);
+  app.delete("/api/marketplace/:id",[authJwt.verifyToken], controller.deleteMarketplace);
+
 
 }

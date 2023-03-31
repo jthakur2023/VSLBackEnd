@@ -4,6 +4,7 @@ const Listing = db.listing;
 const User = db.user;
 const Favorite = db.favorite;
 const Item = db.item;
+const Marketplace = db.marketplace;
 const Op = db.Sequelize.Op;
 
 const jwt = require("jsonwebtoken");
@@ -39,7 +40,7 @@ exports.createListing = async (req, res) => {
 };
 
 
-// Retrieve all Tutorials from the database.
+// Retrieve all listings from the database.
 exports.findAll = (req, res) => {
   const university = req.query.university;
   var condition = university ? { university: { [Op.like]: `%${university}%` } } : null;
@@ -120,7 +121,7 @@ exports.update = (req, res) => {
     });
 };
 
-// Delete a Tutorial with the specified id in the request
+// Delete a listing with the specified id in the request
 exports.delete = (req, res) => {
   const id = req.params.id;
 
@@ -260,6 +261,90 @@ exports.getListingItems = (req, res) => {
       res.status(500).send({
         message:
           err.message || "Some error occurred while retrieving Items."
+      });
+    });
+};
+
+
+// MarketPlace
+
+
+
+exports.createMarketplace = async (req, res) => {
+  // Save User to Database
+  try {
+    if (req.body.image == undefined || req.body.image == ''){
+      req.body.image = "no_image.png";
+    }
+    const listing = await Marketplace.create({
+      title: req.body.title,
+      description: req.body.description,
+      price: req.body.price,
+      condition: req.body.condition,
+      image: req.body.image,
+      userId:req.body.userid,
+      contact:req.body.contact,
+      university:req.body.university,
+    });
+    res.send({ message: "MarketPlace created successfully!" });
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+};
+
+exports.findAllMarketplaces = (req, res) => {
+  const university = req.query.university;
+  var condition = university ? { university: { [Op.like]: `%${university}%` } } : null;
+
+  Marketplace.findAll({ where: condition })
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving marketplace."
+      });
+    });
+};
+
+
+exports.getMarketplaceByUser = (req, res) => {
+  const id = req.params.userid;
+  
+  User.findOne({ where: { id: id}, include: ["marketplaces"] })
+    .then(data => {
+      console.log(data);
+      res.send(data.dataValues.marketplaces);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving marketplaces."
+      });
+    });
+};
+
+exports.deleteMarketplace = (req, res) => {
+  const id = req.params.id;
+
+  Marketplace.destroy({
+    where: { id: id }
+  })
+    .then(num => {
+      if (num == 1) {
+        res.send({
+          message: "Marketplace was deleted successfully!"
+        });
+      } else {
+        res.send({
+          message: `Cannot delete marketplace with id=${id}. Maybe Marketplace was not found!`
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Could not delete Listings with id=" + id
       });
     });
 };

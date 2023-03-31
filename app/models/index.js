@@ -31,6 +31,7 @@ db.listing = require("../models/listing.model.js")(sequelize, Sequelize);
 db.comment = require("../models/comment.model.js")(sequelize, Sequelize);
 db.favorite = require("../models/favorites.model.js")(sequelize, Sequelize);
 db.item = require("./item.model.js")(sequelize, Sequelize);
+db.marketplace = require("./marketplace.model.js")(sequelize, Sequelize);
 
 db.listing.belongsToMany(db.user, {
   through: "favorites",
@@ -49,4 +50,9 @@ db.item.belongsTo(db.listing, {
   as: "listing"
 });
 
+db.user.hasMany(db.marketplace, {as: "markerplaces"});
+db.marketplace.belongsTo(db.user, {
+  foreignKey: "userId",
+  as: "user"
+});
 module.exports = db;
