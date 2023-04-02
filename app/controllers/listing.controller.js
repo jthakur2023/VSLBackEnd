@@ -29,7 +29,8 @@ exports.createListing = async (req, res) => {
       phoneNumber: req.body.phoneNumber,
       email: req.body.email,
       personalNote: req.body.personalNote,
-
+      wifi: req.body.wifi,
+      
       rent:  req.body.rent,
       gender: req.body.gender,
       userid: req.body.userid,

@@ -30,6 +30,10 @@ module.exports = (sequelize, Sequelize) => {
     personalNote: {
       type: Sequelize.STRING
     },
+    wifi: {
+      type: Sequelize.STRING
+    },
+
     gender: {
       type: Sequelize.STRING
     },
