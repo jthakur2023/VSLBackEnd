@@ -3,22 +3,31 @@ module.exports = (sequelize, Sequelize) => {
     address: {
       type: Sequelize.STRING
     },
-    city: {
+    laundry: {
       type: Sequelize.STRING
     },
-    state: {
+    gym: {
       type: Sequelize.STRING
     },
-    zip: {
+    pool: {
       type: Sequelize.STRING
     },
-    rooms: {
+    parking: {
       type: Sequelize.STRING
     },
-    baths: {
+    type: {
       type: Sequelize.STRING
     },
-    area: {
+    sublease: {
+      type: Sequelize.STRING
+    },
+    phoneNumber: {
+      type: Sequelize.STRING
+    },
+    email: {
+      type: Sequelize.STRING
+    },
+    personalNote: {
       type: Sequelize.STRING
     },
     gender: {
