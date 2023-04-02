@@ -12,7 +12,7 @@ module.exports = (sequelize, Sequelize) => {
       price: {
         type: Sequelize.STRING
       },
-      condition: {
+      negotiable: {
         type: Sequelize.STRING
       }
     });

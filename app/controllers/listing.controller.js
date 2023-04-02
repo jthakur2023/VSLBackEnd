@@ -238,7 +238,7 @@ exports.createItem = async (req, res) => {
       title: req.body.title,
       description: req.body.description,
       price: req.body.price,
-      condition: req.body.condition,
+      negotiable: req.body.negotiable,
       image: req.body.image,
       listingId:req.body.listingid,
     });
@@ -280,11 +280,12 @@ exports.createMarketplace = async (req, res) => {
       title: req.body.title,
       description: req.body.description,
       price: req.body.price,
-      condition: req.body.condition,
+      negotiable: req.body.negotiable,
       image: req.body.image,
       userId:req.body.userid,
       contact:req.body.contact,
       university:req.body.university,
+      type:req.body.type,
     });
     res.send({ message: "MarketPlace created successfully!" });
   } catch (error) {
