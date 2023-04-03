@@ -30,6 +30,8 @@ exports.createListing = async (req, res) => {
       email: req.body.email,
       personalNote: req.body.personalNote,
       wifi: req.body.wifi,
+      bedrooms: req.body.bedrooms,
+      bathrooms: req.body.bathrooms,
       
       rent:  req.body.rent,
       gender: req.body.gender,

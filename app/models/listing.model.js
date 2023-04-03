@@ -46,6 +46,12 @@ module.exports = (sequelize, Sequelize) => {
     rent: {
       type: Sequelize.STRING
     },
+    bedrooms: {
+      type: Sequelize.STRING
+    },
+    bathrooms: {
+      type: Sequelize.STRING
+    },
     views: {
       type: Sequelize.INTEGER
     },
