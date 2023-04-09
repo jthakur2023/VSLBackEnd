@@ -52,9 +52,33 @@ exports.createListing = async (req, res) => {
 // Retrieve all listings from the database.
 exports.findAll = (req, res) => {
   const university = req.query.university;
-  var condition = university ? { university: { [Op.like]: `%${university}%` } } : null;
+  const semester = req.query.semester;
+  const type = req.query.type;
+  var unv = university ? { university: { [Op.like]: `%${university}%` } } : null;
+ 
+  var sem = semester ? { semester: { [Op.like]: `%${semester}%` } } : null;
+  var typ = type ? { type: { [Op.like]: `%${type}%` } } : null;
+
+  var condition = Object.assign({},unv, sem, typ);
+   
+  console.log(condition);
 
   Listing.findAll({ where: condition })
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving Listings."
+      });
+    });
+};
+
+exports.findAllBySemester = (req, res) => {
+  const semester = req.query.semester;
+  var sem = semester ? { semester: { [Op.like]: `%${semester}%` } } : null;
+  Listing.findAll({ where: sem })
     .then(data => {
       res.send(data);
     })
